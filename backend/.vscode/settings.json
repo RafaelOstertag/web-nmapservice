@@ -1,0 +1,4 @@
+{
+    "go.goroot": "~/go",
+    "go.gopath": "${workspaceFolder}"
+}
