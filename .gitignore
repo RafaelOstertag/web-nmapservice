@@ -1,3 +1,4 @@
 backend/bin
 backend/src/*
+backend/pkg/*
 !backend/src/guengel.ch

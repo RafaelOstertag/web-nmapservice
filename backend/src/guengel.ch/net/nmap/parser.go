@@ -6,8 +6,7 @@ import (
 	"strconv"
 )
 
-// XMLResult holds the result of the scan.
-type XMLResult struct {
+type xmlResult struct {
 	Status struct {
 		State string `xml:"state,attr"`
 	} `xml:"host>status"`
@@ -35,8 +34,8 @@ type Port struct {
 	Name   string
 }
 
-// JSONResult holds the result of the Nmap scan in a form suitable for JSON output.
-type JSONResult struct {
+// Result holds the result of the Nmap scan in a form suitable for JSON output.
+type Result struct {
 	State     string
 	Addresses []string
 	Hostnames []string
@@ -44,38 +43,38 @@ type JSONResult struct {
 }
 
 // ParseResult reads the XML result from Nmap
-func (r *XMLResult) ParseResult(nmapResult []byte) (e error) {
+func (r *xmlResult) ParseResult(nmapResult []byte) (e error) {
 	e = xml.Unmarshal(nmapResult, r)
 	return
 }
 
-// ToJSONResult returns the XMLResult as JSONResult
-func (r *XMLResult) ToJSONResult() *JSONResult {
-	jsonResult := new(JSONResult)
+// ToResult returns the XMLResult as Result
+func (r *xmlResult) ToResult() *Result {
+	result := new(Result)
 
-	jsonResult.State = r.Status.State
-	jsonResult.Hostnames = make([]string, len(r.Hostnames))
+	result.State = r.Status.State
+	result.Hostnames = make([]string, len(r.Hostnames))
 	for i, hostname := range r.Hostnames {
-		jsonResult.Hostnames[i] = hostname.Hostname
+		result.Hostnames[i] = hostname.Hostname
 	}
 
-	jsonResult.Addresses = make([]string, len(r.Addresses))
+	result.Addresses = make([]string, len(r.Addresses))
 	for i, address := range r.Addresses {
-		jsonResult.Addresses[i] = address.Address
+		result.Addresses[i] = address.Address
 	}
 
-	jsonResult.Ports = make([]Port, len(r.Ports))
+	result.Ports = make([]Port, len(r.Ports))
 	for i, port := range r.Ports {
-		jsonResult.Ports[i].Name = port.Service.Name
+		result.Ports[i].Name = port.Service.Name
 
 		var err error
-		if jsonResult.Ports[i].Number, err = strconv.Atoi(port.Portid); err != nil {
-			jsonResult.Ports[i].Number = -1
+		if result.Ports[i].Number, err = strconv.Atoi(port.Portid); err != nil {
+			result.Ports[i].Number = -1
 			log.Printf("Error converting port number: %v", err)
 		}
 
-		jsonResult.Ports[i].State = port.State.State
+		result.Ports[i].State = port.State.State
 	}
 
-	return jsonResult
+	return result
 }

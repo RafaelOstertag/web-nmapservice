@@ -120,7 +120,7 @@ const scanResultFixture string = `<?xml version="1.0" encoding="UTF-8"?>
 `
 
 func TestParseResult(t *testing.T) {
-	res := new(XMLResult)
+	res := new(xmlResult)
 	if err := res.ParseResult([]byte(scanResultFixture)); err != nil {
 		t.Errorf("Error parsing fixture: %v", err)
 	}
@@ -155,19 +155,19 @@ func TestParseResult(t *testing.T) {
 }
 
 func TestParseEmptyResult(t *testing.T) {
-	res := new(XMLResult)
+	res := new(xmlResult)
 	if err := res.ParseResult([]byte(emptyResultFixture)); err != nil {
 		t.Errorf("Error parsing fixture: %v", err)
 	}
 }
 
-func TestToJSONResult(t *testing.T) {
-	res := new(XMLResult)
+func TestToResult(t *testing.T) {
+	res := new(xmlResult)
 	if err := res.ParseResult([]byte(scanResultFixture)); err != nil {
 		t.Errorf("Error parsing fixture: %v", err)
 	}
 
-	jsonResult := res.ToJSONResult()
+	jsonResult := res.ToResult()
 
 	if jsonResult.State != "up" {
 		t.Error("Status != up")
@@ -198,16 +198,16 @@ func TestToJSONResult(t *testing.T) {
 	}
 }
 
-func TestToJSONResultEmptyResult(t *testing.T) {
-	res := new(XMLResult)
+func TestToResultWithEmptyXMLResult(t *testing.T) {
+	res := new(xmlResult)
 	if err := res.ParseResult([]byte(emptyResultFixture)); err != nil {
 		t.Errorf("Error parsing fixture: %v", err)
 	}
 
-	res.ToJSONResult()
+	res.ToResult()
 }
 
-func TestToJSONResultOnEmptyXMLResult(t *testing.T) {
-	res := new(XMLResult)
-	res.ToJSONResult()
+func TestToResultOnEmptyXMLResult(t *testing.T) {
+	res := new(xmlResult)
+	res.ToResult()
 }
