@@ -20,7 +20,7 @@ func Test_validatePortSpec(t *testing.T) {
 		{"mixed spec", args{"12,13-25,2,4"}, false},
 		{"mixed spec w/ starting range", args{"13,25,12,2"}, false},
 		{"invalid spec", args{"ssh,telnet"}, true},
-		{"empty spec", args{""}, true},
+		{"empty spec", args{""}, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

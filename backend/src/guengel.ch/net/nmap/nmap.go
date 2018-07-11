@@ -11,7 +11,7 @@ import (
 
 const (
 	defaultNmapCommand   = "nmap"
-	portSpecRegexpString = "^(\\d+|\\d+-\\d+|,)+$"
+	portSpecRegexpString = "^(\\d+|\\d+-\\d+|,)*$"
 	hostRegexString      = "^([\\da-zA-Z-]+\\.){2,}[\\da-zA-Z.-]+$"
 )
 
@@ -20,7 +20,7 @@ var (
 	hostRegex      = regexp.MustCompile(hostRegexString)
 )
 
-// Run nmap against host using portspec. Portspec may only contain digits, `-`, and `,`.
+// Run nmap against host using portspec. Portspec may only contain digits, `-`, and `,` or be empty.
 func Run(host, portspec string) (*Result, error) {
 	nmapCommand := getNmapCommand()
 
@@ -34,7 +34,12 @@ func Run(host, portspec string) (*Result, error) {
 		return nil, errors.New("Invalid host")
 	}
 
-	cmd := exec.Command(nmapCommand, "-oX", "-", "-p", portspec, host)
+	var cmd *exec.Cmd
+	if portspec == "" {
+		cmd = exec.Command(nmapCommand, "-oX", "-", host)
+	} else {
+		cmd = exec.Command(nmapCommand, "-oX", "-", "-p", portspec, host)
+	}
 
 	var output []byte
 	var err error
