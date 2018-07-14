@@ -66,11 +66,10 @@ pipeline {
     }
 
     post {
-         failure {
-            mail subject: 'Build Failure', to: 'rafi@guengel.ch'
-        }
-        success {
-            mail subject: 'Build Success', to: 'rafi@guengel.ch'
-        }
+         always {
+             mail to:"rafi@guengel.ch",
+              subject:"${JOBNAME}#${BRANCH_NAME} -- ${currentBuild.currentResult}",
+              body:"Refer to ${currentBuild.absoluteUrl}"
+         }
     }
 }
