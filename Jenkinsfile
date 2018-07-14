@@ -16,6 +16,12 @@ pipeline {
     }
 
     stages {
+	stage('clean') {
+	    steps {
+		sh 'make clean'
+	    }
+	}
+	
         stage('tests') {
             steps {
                 sh 'make tests'
