@@ -35,7 +35,7 @@ pipeline {
 
 	    steps {
 		withCredentials([usernameColonPassword(credentialsId: '80a834f5-b4ca-42b1-b5c6-55db88dca0a4', variable: 'CREDENTIALS')]) {
-		    sh 'curl -k -u "$CREDENTIALS" --data bin/nmapservice "${NEXUS}${REPOSITORY}"/nmapservice'
+		    sh 'curl -k -u "$CREDENTIALS" --upload-file bin/nmapservice "${NEXUS}${REPOSITORY}"/nmapservice'
 		}
 	    }
 	}
