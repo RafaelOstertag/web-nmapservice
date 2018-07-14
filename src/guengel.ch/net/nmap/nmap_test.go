@@ -1,6 +1,7 @@
 package nmap
 
 import (
+	"os"
 	"reflect"
 	"testing"
 )
@@ -55,7 +56,11 @@ func Test_validateHost(t *testing.T) {
 	}
 }
 
+// TestRun requires to be run with mocks/nmap.sh
 func TestRun(t *testing.T) {
+	goPath := os.Getenv("GOPATH")
+	os.Setenv("NMAP_CMD", goPath+"/mocks/nmap.sh")
+
 	type args struct {
 		host     string
 		portspec string
@@ -71,6 +76,12 @@ func TestRun(t *testing.T) {
 			args{"gizmo.kruemel.home", "22"},
 			&Result{"up", []string{"192.168.100.1"}, []string{"gizmo.kruemel.home"}, []Port{{Name: "ssh", Number: 22, State: "open"}}},
 			false,
+		},
+		{
+			"run against mock with invalid parameters",
+			args{"gizmo.kruemel.home", ""},
+			nil,
+			true,
 		},
 	}
 	for _, tt := range tests {
