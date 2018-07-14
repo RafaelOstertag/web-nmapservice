@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/go-ozzo/ozzo-routing"
 	"github.com/go-ozzo/ozzo-routing/access"
@@ -21,6 +22,14 @@ func handleScanRequest(c *routing.Context) error {
 	}
 
 	return c.Write(result)
+}
+
+func getListenAddress() string {
+	listen := os.Getenv("LISTEN")
+	if listen == "" {
+		return ":8081"
+	}
+	return listen
 }
 
 func main() {
@@ -42,5 +51,5 @@ func main() {
 
 	http.Handle("/", router)
 	log.Print("Starting server")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(getListenAddress(), nil))
 }
