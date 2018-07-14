@@ -64,4 +64,13 @@ pipeline {
             }
         }
     }
+
+    post {
+         failure {
+            mail subject: 'Build Failure', to: 'rafi@guengel.ch'
+        }
+        success {
+            mail subject: 'Build Success', to: 'rafi@guengel.ch'
+        }
+    }
 }
