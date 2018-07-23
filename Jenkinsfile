@@ -3,12 +3,14 @@ pipeline {
         label 'master'
     }
 
+    triggers {
+        pollSCM ''
+    }
+
     environment {
 	NEXUS = "https://gizmo.kruemel.home/nexus/"
 	REPOSITORY = "repository/webtools/nmapservice/"
     }
-
-
 
     options {
         ansiColor('xterm')
