@@ -27,6 +27,16 @@ func handleScanRequest(c *routing.Context) error {
 	return c.Write(result)
 }
 
+func handleHealthRequest(c *routing.Context) error {
+	type HealthStruct struct {
+		Status string `json:"status"`
+	}
+
+	health := HealthStruct{"ok"}
+
+	return c.Write(health)
+}
+
 func getListenAddress() string {
 	listen := os.Getenv("LISTEN")
 	if listen == "" {
@@ -72,17 +82,18 @@ func main() {
 		access.Logger(log.Printf),
 		slash.Remover(http.StatusMovedPermanently),
 		fault.Recovery(log.Printf),
-	)
-
-	api := router.Group("/v1")
-	api.Use(
 		content.TypeNegotiator(content.JSON),
 	)
+
+	router.Get("/health", handleHealthRequest)
+
+	api := router.Group("/v1")
 
 	api.Get("/scan/<host:[a-zA-Z0-9.-]+>/<portSpec:[\\d,-]+>", handleScanRequest)
 	api.Get("/scan/<host:[a-zA-Z0-9.-]+>", handleScanRequest)
 
 	http.Handle("/", router)
-	log.Print("Starting server")
-	log.Fatal(http.ListenAndServe(getListenAddress(), nil))
+	var listenAddress = getListenAddress()
+	log.Printf("Starting server on %s", listenAddress)
+	log.Fatal(http.ListenAndServe(listenAddress, nil))
 }
