@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	serviceName = "Nmap Service"
+	serviceName = "nmap"
 )
 
 func getConsulAgentAddress() string {
