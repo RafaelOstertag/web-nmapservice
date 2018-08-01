@@ -5,9 +5,12 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
+	"strings"
 	"syscall"
 
-	"guengel.ch/services/nmapservice/router" 
+	"guengel.ch/services/nmapservice/router"
+	"guengel.ch/services/nmapservice/serviceregistry"
 
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -19,6 +22,7 @@ func getListenAddress() string {
 	}
 	return listen
 }
+
 
 func setUpLogging() {
 	logpath, isLogPathSet := os.LookupEnv("LOGPATH")
@@ -48,8 +52,34 @@ func setUpLogging() {
 	}()
 }
 
+func getServiceCoordinates() (string, int) {
+	myListenAddress := getListenAddress()
+	components := strings.Split(myListenAddress, ":")
+
+	var myAddress string
+	if components[0] == "" {
+		myAddress = serviceregistry.GetOutboundIP()
+	} else {
+		myAddress = components[0]
+	}
+
+	myPort, err := strconv.Atoi(components[1])
+	if err != nil {
+		log.Panicf("Error getting listening port: %v", err)
+	}
+
+	return myAddress, myPort
+}
+
 func main() {
 	setUpLogging()
+
+	host, port := getServiceCoordinates()
+
+	err := serviceregistry.Register(host, port)
+	if err != nil {
+		log.Printf("Error during service registration: %v", err)
+	}
 
 	http.Handle("/", router.ApplicationRouting())
 	var listenAddress = getListenAddress()
