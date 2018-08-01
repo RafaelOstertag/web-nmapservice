@@ -3,6 +3,7 @@ package serviceregistry
 import (
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/hashicorp/consul/api"
 )
@@ -22,7 +23,7 @@ func getConsulAgentAddress() string {
 func makeCheck(host string, port int) *api.AgentServiceCheck {
 	check := new(api.AgentServiceCheck)
 	check.Name = "Check " + serviceName
-	check.HTTP = "http://" + host + ":" + string(port) + "/health"
+	check.HTTP = "http://" + host + ":" + strconv.Itoa(port) + "/health"
 	check.Method = "GET"
 	check.Interval = "15s"
 
