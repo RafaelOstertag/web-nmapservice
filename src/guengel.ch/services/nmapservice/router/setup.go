@@ -34,7 +34,7 @@ func handleScanRequest(c *routing.Context) error {
 
 func handleHealthRequest(c *routing.Context) error {
 	type HealthStruct struct {
-		Status string
+		Status string `json:"status"`
 	}
 
 	health := HealthStruct{"ok"}
