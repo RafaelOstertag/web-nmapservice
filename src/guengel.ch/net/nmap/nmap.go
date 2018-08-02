@@ -20,18 +20,32 @@ var (
 	hostRegex      = regexp.MustCompile(hostRegexString)
 )
 
+// PortSpecError indicates an invalid port specification
+type PortSpecError string
+
+func (t PortSpecError) Error() string {
+	return string(t)
+}
+
+// HostSpecError indicates an invalid host specification
+type HostSpecError string
+
+func (t HostSpecError) Error() string {
+	return string(t)
+}
+
 // Run nmap against host using portspec. Portspec may only contain digits, `-`, and `,` or be empty.
 func Run(host, portspec string) (*Result, error) {
 	nmapCommand := getNmapCommand()
 
 	if err := validatePortSpec(portspec); err != nil {
 		log.Printf("Portspec invalid: %v", err)
-		return nil, errors.New("Invalid portspec")
+		return nil, PortSpecError("Invalid portspec")
 	}
 
 	if err := validateHost(host); err != nil {
 		log.Printf("Host invalid: %v", err)
-		return nil, errors.New("Invalid host")
+		return nil, HostSpecError("Invalid host")
 	}
 
 	var cmd *exec.Cmd

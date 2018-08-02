@@ -18,6 +18,14 @@ func handleScanRequest(c *routing.Context) error {
 	var result *nmap.Result
 
 	if result, err = nmap.Run(c.Param("host"), c.Param("portSpec")); err != nil {
+		if _, ok := err.(nmap.HostSpecError); ok == true {
+			return routing.NewHTTPError(400, err.Error())
+		}
+
+		if _, ok := err.(nmap.PortSpecError); ok == true {
+			return routing.NewHTTPError(400, err.Error())
+		}
+
 		return err
 	}
 

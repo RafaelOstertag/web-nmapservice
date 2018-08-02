@@ -2,8 +2,8 @@
     "go.goroot": "~/go",
     "go.gopath": "${workspaceFolder}",
     "files.watcherExclude": {
-        "src/pkg/**": true,
-        "src/golang.org/**": true,
-        "src/github.com/**": true
+        "**/src/pkg/**": true,
+        "**/src/golang.org/**": true,
+        "**/src/github.com/**": true
     }
 }
