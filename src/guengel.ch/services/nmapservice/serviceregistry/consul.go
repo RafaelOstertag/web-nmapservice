@@ -26,6 +26,7 @@ func makeCheck(host string, port int) *api.AgentServiceCheck {
 	check.HTTP = "http://" + host + ":" + strconv.Itoa(port) + "/health"
 	check.Method = "GET"
 	check.Interval = "15s"
+	check.DeregisterCriticalServiceAfter = "30s"
 
 	return check
 }
