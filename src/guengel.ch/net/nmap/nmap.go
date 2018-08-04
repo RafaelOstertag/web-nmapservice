@@ -34,6 +34,13 @@ func (t HostSpecError) Error() string {
 	return string(t)
 }
 
+// ScannerError indicates a scanner issue
+type ScannerError string
+
+func (t ScannerError) Error() string {
+	return string(t)
+}
+
 // Run nmap against host using portspec. Portspec may only contain digits, `-`, and `,` or be empty.
 func Run(host, portspec string) (*Result, error) {
 	nmapCommand := getNmapCommand()
@@ -59,7 +66,11 @@ func Run(host, portspec string) (*Result, error) {
 	var err error
 	if output, err = cmd.Output(); err != nil {
 		log.Printf("Error running nmap: %v", err)
-		return nil, err
+		if _, ok := err.(*exec.ExitError); ok == true {
+			return nil, ScannerError("Error invoking scanner")
+		}
+		return nil, ScannerError(err.Error())
+
 	}
 
 	xmlResult := new(xmlResult)

@@ -26,6 +26,10 @@ func handleScanRequest(c *routing.Context) error {
 			return routing.NewHTTPError(400, err.Error())
 		}
 
+		if _, ok := err.(nmap.ScannerError); ok == true {
+			return routing.NewHTTPError(400, err.Error())
+		}
+
 		return err
 	}
 
