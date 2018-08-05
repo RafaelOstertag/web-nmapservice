@@ -33,8 +33,8 @@ func setUpLogging() {
 
 	lj := lumberjack.Logger{
 		Filename:   logpath + "/nmapservice.log",
-		MaxSize:    5, // megabytes
-		MaxBackups: 3,
+		MaxSize:    1, // megabytes
+		MaxBackups: 10,
 		MaxAge:     28,   //days
 		Compress:   true, // disabled by default
 	}
