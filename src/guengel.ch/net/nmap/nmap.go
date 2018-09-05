@@ -12,7 +12,7 @@ import (
 const (
 	defaultNmapCommand   = "nmap"
 	portSpecRegexpString = "^(\\d+|\\d+-\\d+|,)*$"
-	hostRegexString      = "^([\\da-zA-Z-]+\\.){2,}[\\da-zA-Z.-]+$"
+	hostRegexString      = "^([\\da-zA-Z-]+\\.)+([a-zA-Z]+)$|^([\\d]{1,3}\\.){3}[\\d]+$"
 )
 
 var (

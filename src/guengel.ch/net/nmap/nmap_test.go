@@ -45,7 +45,10 @@ func Test_validateHost(t *testing.T) {
 		{"ip v4 address", args{"10.0.0.1"}, false},
 		{"ip v6 address", args{"::1"}, true},
 		{"invalid ip", args{"10.0"}, true},
-		{"invalid host", args{"www.example"}, true},
+		{"short host", args{"www.example"}, false},
+		{"invalid host", args{"example"}, true},
+		{"invalid host", args{"ch."}, true},
+		{"invalid host", args{".ch"}, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
