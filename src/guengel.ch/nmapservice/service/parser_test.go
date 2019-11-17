@@ -1,4 +1,4 @@
-package nmap
+package service
 
 import (
 	"testing"

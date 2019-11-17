@@ -6,14 +6,14 @@ DEPENDENCIES =
 all: tests coverage nmapservice
 
 tests:
-	$(GOENV) go test -v guengel.ch/net/nmap
+	$(GOENV) go test -v guengel.ch/nmapservice
 
 $(GOCOV):
 	$(GOENV) go get github.com/axw/gocov/gocov
 
 
 coverage: $(GOCOV)
-	$(GOENV) $(GOCOV) test guengel.ch/net/nmap | $(GOCOV) report
+	$(GOENV) $(GOCOV) test guengel.ch/nmapservice/service | $(GOCOV) report
 
 
 clean:
@@ -21,4 +21,4 @@ clean:
 	rm -rf src/github.com src/golang.org
 
 nmapservice:
-	$(GOENV) go get guengel.ch/services/nmapservice
+	$(GOENV) go get -v guengel.ch/nmapservice

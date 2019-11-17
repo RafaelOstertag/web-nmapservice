@@ -1,4 +1,4 @@
-package nmap
+package service
 
 import (
 	"encoding/xml"
@@ -29,17 +29,17 @@ type xmlResult struct {
 
 // Port holds the port state
 type Port struct {
-	Number int    `json:"number"`
-	State  string `json:"state"`
-	Name   string `json:"name"`
+	Number int
+	State  string
+	Name   string
 }
 
 // Result holds the result of the Nmap scan in a form suitable for JSON output.
 type Result struct {
-	State     string   `json:"state"`
-	Addresses []string `json:"addresses"`
-	Hostnames []string `json:"hostnames"`
-	Ports     []Port   `json:"ports"`
+	State     string
+	Addresses []string
+	Hostnames []string
+	Ports     []Port
 }
 
 // ParseResult reads the XML result from Nmap

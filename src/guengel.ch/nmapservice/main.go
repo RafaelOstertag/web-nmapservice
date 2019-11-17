@@ -2,17 +2,19 @@ package main
 
 import (
 	"log"
-	"net/http"
+	"net"
 	"os"
 	"os/signal"
 	"strconv"
 	"strings"
 	"syscall"
 
-	"guengel.ch/services/nmapservice/router"
-	"guengel.ch/services/nmapservice/serviceregistry"
+	"guengel.ch/nmapservice/service"
 
+	"google.golang.org/grpc"
 	"gopkg.in/natefinch/lumberjack.v2"
+
+	gnms "github.com/RafaelOstertag/grpcnmapservice"
 )
 
 func getListenAddress() string {
@@ -22,7 +24,6 @@ func getListenAddress() string {
 	}
 	return listen
 }
-
 
 func setUpLogging() {
 	logpath, isLogPathSet := os.LookupEnv("LOGPATH")
@@ -58,7 +59,7 @@ func getServiceCoordinates() (string, int) {
 
 	var myAddress string
 	if components[0] == "" {
-		myAddress = serviceregistry.GetOutboundIP()
+		myAddress = service.GetOutboundIP()
 	} else {
 		myAddress = components[0]
 	}
@@ -76,13 +77,22 @@ func main() {
 
 	host, port := getServiceCoordinates()
 
-	err := serviceregistry.Register(host, port)
+	err := service.Register(host, port)
 	if err != nil {
 		log.Printf("Error during service registration: %v", err)
 	}
 
-	http.Handle("/", router.ApplicationRouting())
 	var listenAddress = getListenAddress()
 	log.Printf("Starting server on %s", listenAddress)
-	log.Fatal(http.ListenAndServe(listenAddress, nil))
+
+	lis, err := net.Listen("tcp", listenAddress)
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+
+	grpcServer := grpc.NewServer()
+
+	gnms.RegisterNmapServer(grpcServer, &service.NmapService{})
+	gnms.RegisterHealthServer(grpcServer, &service.HealthService{Health: make(chan gnms.HealthCheckResponse_ServingStatus)})
+	grpcServer.Serve(lis)
 }
