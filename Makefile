@@ -3,7 +3,7 @@ GOCOV = bin/gocov
 
 DEPENDENCIES = 
 
-all: tests coverage nmapservice
+all: nmapservice tests coverage
 
 tests:
 	$(GOENV) go test -v guengel.ch/nmapservice
