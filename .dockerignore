@@ -1,0 +1,7 @@
+/.vscode
+/bin
+/pkg
+/src
+!/src/guengel.ch
+/Jenkinsfile
+/README.md
