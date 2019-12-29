@@ -1,4 +1,5 @@
 /.vscode
+/.git
 /bin
 /pkg
 /src
