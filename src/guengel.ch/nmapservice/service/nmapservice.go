@@ -3,6 +3,9 @@ package service
 import (
 	context "context"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	gnms "github.com/RafaelOstertag/grpcnmapservice"
 )
 
@@ -16,7 +19,15 @@ func (ns *NmapService) Scan(ctx context.Context, req *gnms.ScanRequest) (*gnms.S
 	var result *Result
 
 	if result, err = Run(req.GetHost(), req.GetPortSpec()); err != nil {
-		return nil, err
+		if _, ok := err.(HostSpecError); ok {
+			return nil, status.Error(codes.InvalidArgument, err.Error())
+		} else if _, ok := err.(PortSpecError); ok {
+			return nil, status.Error(codes.InvalidArgument, err.Error())
+		} else if _, ok := err.(ScannerError); ok {
+			return nil, status.Error(codes.Internal, err.Error)
+		}
+
+		return nil, status.Error(codes.Unknown, err.Error())
 	}
 
 	return toScanReply(result), nil
@@ -28,8 +39,8 @@ func toScanReply(nmapResult *Result) *gnms.ScanReply {
 	for i, port := range nmapResult.Ports {
 		ports[i] = &gnms.ScanReply_Port{
 			Number: int32(port.Number),
-			Name: port.Name,
-			State: port.State,
+			Name:   port.Name,
+			State:  port.State,
 		}
 	}
 
@@ -37,6 +48,6 @@ func toScanReply(nmapResult *Result) *gnms.ScanReply {
 		State:     nmapResult.State,
 		Addresses: nmapResult.Addresses,
 		Hostnames: nmapResult.Hostnames,
-		Ports: ports,
+		Ports:     ports,
 	}
 }
