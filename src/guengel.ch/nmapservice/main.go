@@ -12,7 +12,8 @@ import (
 	"guengel.ch/nmapservice/service"
 
 	"google.golang.org/grpc"
-	"gopkg.in/natefinch/lumberjack.v2"
+	// this is currently having difficulties to be resolved: "gopkg.in/natefinch/lumberjack.v2"
+	"github.com/natefinch/lumberjack"
 
 	gnms "github.com/RafaelOstertag/grpcnmapservice"
 )
