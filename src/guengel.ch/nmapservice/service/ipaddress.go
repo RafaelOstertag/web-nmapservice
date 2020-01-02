@@ -1,4 +1,4 @@
-package serviceregistry
+package service
 
 import (
 	"log"

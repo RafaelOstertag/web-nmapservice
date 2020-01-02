@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'master'
+        label 'freebsd&&go'
     }
 
     triggers {
@@ -8,8 +8,8 @@ pipeline {
     }
 
     environment {
-	NEXUS = "https://gizmo.kruemel.home/nexus/"
-	REPOSITORY = "repository/webtools/nmapservice/"
+	    NEXUS = "https://colossus.kruemel.home/nexus/"
+	    REPOSITORY = "repository/webtools/nmapservice/"
     }
 
     options {
@@ -23,16 +23,16 @@ pipeline {
                sh 'make clean'
             }
         }
-	
-        stage('tests') {
-            steps {
-                sh 'make tests'
-            }
-        }
 
         stage('build') {
             steps {
                 sh 'make nmapservice'
+            }
+        }
+	
+        stage('tests') {
+            steps {
+                sh 'make tests'
             }
         }
 

@@ -1,4 +1,4 @@
-package serviceregistry
+package service
 
 import (
 	"log"
@@ -23,8 +23,7 @@ func getConsulAgentAddress() string {
 func makeCheck(host string, port int) *api.AgentServiceCheck {
 	check := new(api.AgentServiceCheck)
 	check.Name = "Check " + serviceName
-	check.HTTP = "http://" + host + ":" + strconv.Itoa(port) + "/health"
-	check.Method = "GET"
+	check.GRPC = host + ":" + strconv.Itoa(port)
 	check.Interval = "15s"
 	check.DeregisterCriticalServiceAfter = "30s"
 
