@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'master'
+        label 'freebsd&&go'
     }
 
     triggers {
@@ -8,7 +8,7 @@ pipeline {
     }
 
     environment {
-	NEXUS = "https://gizmo.kruemel.home/nexus/"
+	NEXUS = "https://colossus.kruemel.home/nexus/"
 	REPOSITORY = "repository/webtools/nmapservice/"
     }
 
