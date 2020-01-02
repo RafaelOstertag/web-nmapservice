@@ -23,16 +23,16 @@ pipeline {
                sh 'make clean'
             }
         }
-	
-        stage('tests') {
-            steps {
-                sh 'make tests'
-            }
-        }
 
         stage('build') {
             steps {
                 sh 'make nmapservice'
+            }
+        }
+	
+        stage('tests') {
+            steps {
+                sh 'make tests'
             }
         }
 
