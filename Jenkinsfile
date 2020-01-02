@@ -8,8 +8,8 @@ pipeline {
     }
 
     environment {
-	NEXUS = "https://colossus.kruemel.home/nexus/"
-	REPOSITORY = "repository/webtools/nmapservice/"
+	    NEXUS = "https://colossus.kruemel.home/nexus/"
+	    REPOSITORY = "repository/webtools/nmapservice/"
     }
 
     options {
