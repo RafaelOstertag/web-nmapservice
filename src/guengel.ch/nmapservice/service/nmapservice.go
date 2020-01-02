@@ -24,7 +24,7 @@ func (ns *NmapService) Scan(ctx context.Context, req *gnms.ScanRequest) (*gnms.S
 		} else if _, ok := err.(PortSpecError); ok {
 			return nil, status.Error(codes.InvalidArgument, err.Error())
 		} else if _, ok := err.(ScannerError); ok {
-			return nil, status.Error(codes.Internal, err.Error)
+			return nil, status.Error(codes.Internal, err.Error())
 		}
 
 		return nil, status.Error(codes.Unknown, err.Error())
