@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/hashicorp/consul/api"
 )
@@ -53,9 +54,13 @@ func Register(host string, port int) error {
 
 	consulAddress := getConsulAgentAddress()
 	log.Printf("Connect to consul %s", consulAddress)
+
+	var sleep time.Duration = 1000
 	consul, err := connectConsul(consulAddress)
-	if err != nil {
-		return err
+	for ; err != nil; consul, err = connectConsul(consulAddress) {
+		log.Printf("Could not reach consul. Will retry in %d", sleep)
+		time.Sleep(sleep * time.Millisecond)
+		sleep *= 2
 	}
 
 	consulAgent := consul.Agent()
