@@ -2,6 +2,7 @@ package service
 
 import (
 	context "context"
+	"log"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -17,6 +18,8 @@ type NmapService struct {
 func (ns *NmapService) Scan(ctx context.Context, req *gnms.ScanRequest) (*gnms.ScanReply, error) {
 	var err error
 	var result *Result
+
+	log.Printf("Scan host '%s' with portspec '%s'", req.GetHost(), req.GetPortSpec())
 
 	if result, err = Run(req.GetHost(), req.GetPortSpec()); err != nil {
 		if _, ok := err.(HostSpecError); ok {
