@@ -5,6 +5,7 @@ pipeline {
 
     triggers {
         pollSCM ''
+        cron '@daily'
     }
 
     environment {
@@ -39,6 +40,9 @@ pipeline {
         stage('deploy') {
             when {
                 branch 'master'
+                not {
+                    triggeredBy "TimerTrigger"
+                }
             }
 
             steps {
@@ -68,7 +72,7 @@ pipeline {
     }
 
     post {
-         always {
+         unsuccessful {
              mail to:"rafi@guengel.ch",
               subject:"${JOB_NAME} (${BRANCH_NAME};${env.BUILD_DISPLAY_NAME}) -- ${currentBuild.currentResult}",
               body:"Refer to ${currentBuild.absoluteUrl}"

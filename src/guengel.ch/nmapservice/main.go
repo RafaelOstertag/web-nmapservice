@@ -5,8 +5,6 @@ import (
 	"net"
 	"os"
 	"os/signal"
-	"strconv"
-	"strings"
 	"syscall"
 
 	"guengel.ch/nmapservice/service"
@@ -54,34 +52,8 @@ func setUpLogging() {
 	}()
 }
 
-func getServiceCoordinates() (string, int) {
-	myListenAddress := getListenAddress()
-	components := strings.Split(myListenAddress, ":")
-
-	var myAddress string
-	if components[0] == "" {
-		myAddress = service.GetOutboundIP()
-	} else {
-		myAddress = components[0]
-	}
-
-	myPort, err := strconv.Atoi(components[1])
-	if err != nil {
-		log.Panicf("Error getting listening port: %v", err)
-	}
-
-	return myAddress, myPort
-}
-
 func main() {
 	setUpLogging()
-
-	host, port := getServiceCoordinates()
-
-	err := service.Register(host, port)
-	if err != nil {
-		log.Printf("Error during service registration: %v", err)
-	}
 
 	var listenAddress = getListenAddress()
 	log.Printf("Starting server on %s", listenAddress)

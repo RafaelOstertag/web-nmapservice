@@ -37,7 +37,7 @@ func (hs *HealthService) Check(ctx context.Context, in *gnms.HealthCheckRequest)
 func (hs *HealthService) Watch(in *gnms.HealthCheckRequest, stream gnms.Health_WatchServer) error {
 	requestedServiceName := in.GetService()
 
-	if requestedServiceName != "" && requestedServiceName != serviceName {
+	if requestedServiceName != "" && requestedServiceName != grpcServiceName {
 		if err := stream.Send(&serviceUnknown); err != nil {
 			return err
 		}
