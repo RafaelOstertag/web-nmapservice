@@ -55,6 +55,9 @@ pipeline {
         stage('poke rundeck') {
             when {
                 branch 'master'
+                not {
+                    triggeredBy "TimerTrigger"
+                }
             }
 
             steps {
