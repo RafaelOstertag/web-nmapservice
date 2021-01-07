@@ -4,7 +4,7 @@ pipeline {
     }
 
     triggers {
-        pollSCM ''
+        pollSCM '@hourly'
         cron '@daily'
     }
 
@@ -15,7 +15,9 @@ pipeline {
 
     options {
         ansiColor('xterm')
-        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '15')
+        timestamps()
+        disableConcurrentBuilds()
     }
 
     stages {
