@@ -23,19 +23,19 @@ pipeline {
     stages {
         stage('clean') {
             steps {
-               sh 'make clean'
+               sh 'gmake clean'
             }
         }
 
         stage('build') {
             steps {
-                sh 'make nmapservice'
+                sh 'gmake nmapservice'
             }
         }
 	
         stage('tests') {
             steps {
-                sh 'make tests'
+                sh 'gmake tests'
             }
         }
 
@@ -49,7 +49,7 @@ pipeline {
 
             steps {
                 withCredentials([usernameColonPassword(credentialsId: '80a834f5-b4ca-42b1-b5c6-55db88dca0a4', variable: 'CREDENTIALS')]) {
-                    sh 'curl -k -u "$CREDENTIALS" --upload-file bin/nmapservice "${NEXUS}${REPOSITORY}"/nmapservice'
+                    sh 'curl -k -u "$CREDENTIALS" --upload-file src/nmapservice "${NEXUS}${REPOSITORY}"/nmapservice'
                 }
             }
         }

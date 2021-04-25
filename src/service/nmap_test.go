@@ -61,8 +61,7 @@ func Test_validateHost(t *testing.T) {
 
 // TestRun requires to be run with mocks/nmap.sh
 func TestRun(t *testing.T) {
-	goPath := os.Getenv("GOPATH")
-	os.Setenv("NMAP_CMD", goPath+"/mocks/nmap.sh")
+	os.Setenv("NMAP_CMD", "../../mocks/nmap.sh")
 
 	type args struct {
 		host     string

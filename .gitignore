@@ -1,6 +1,5 @@
 bin/
 pkg/
-src/*
 debug
-!src/guengel.ch
-.vscode/launch.json
+.idea/
+/src/nmapservice
