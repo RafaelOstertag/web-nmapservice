@@ -1,0 +1,54 @@
+version: 2.1
+
+only-main: &onlymain
+  branches:
+    only:
+      - master
+
+orbs:
+  c: rafaelostertag/common-orb@1.19.0
+
+executors:
+  go-executor:
+    docker:
+      - image: cimg/go:1.18.1
+    resource_class: small
+  base-executor:
+    docker:
+      - image: cimg/base:2022.03
+    resource_class: small
+
+jobs:
+  build:
+    executor: go-executor
+    steps:
+      - checkout
+      - run:
+          name: Build
+          command: make nmapservice
+      - run:
+          name: Test
+          command: make tests
+      - persist_to_workspace:
+          root: .
+          paths:
+            - src/nmapservice
+  deploy-artifact:
+    executor: base-executor
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Deploy
+          command: curl -f -u "${REPO_USERNAME}:${REPO_PASSWORD}" --upload-file "src/nmapservice" "https://rafaelostertag.jfrog.io/artifactory/local-generic/nmapservice/nmapservice"
+
+workflows:
+  build-any-branch:
+    jobs:
+      - build
+      - deploy-artifact:
+          filters: *onlymain
+          requires:
+            - build
+          context:
+            - generic-repository-write

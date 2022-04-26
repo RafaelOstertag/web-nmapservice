@@ -2,6 +2,8 @@ cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMT
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/RafaelOstertag/grpcnmapservice v0.0.0-20210317195003-b5efe12fd2cd h1:KPii0j2MbMlsRTF60cbcFGGkYAnZo887QnxpSa3ZrYM=
 github.com/RafaelOstertag/grpcnmapservice v0.0.0-20210317195003-b5efe12fd2cd/go.mod h1:DHWKVbYqHJ2isK/m8i+7uWtcJVE2Zl9DkU8h8k6bJWg=
+github.com/RafaelOstertag/grpcnmapservice v1.0.6 h1:mO041pbEvy/MNIHhG0qFFAXJIeavW3kZGEZMNnjNYvU=
+github.com/RafaelOstertag/grpcnmapservice v1.0.6/go.mod h1:DHWKVbYqHJ2isK/m8i+7uWtcJVE2Zl9DkU8h8k6bJWg=
 github.com/axw/gocov v1.0.0 h1:YsqYR66hUmilVr23tu8USgnJIJvnwh3n7j5zRn7x4LU=
 github.com/axw/gocov v1.0.0/go.mod h1:LvQpEYiwwIb2nYkXY2fDWhg9/AsYqkhmrCshjlUJECE=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
