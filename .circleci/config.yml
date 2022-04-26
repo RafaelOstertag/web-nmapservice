@@ -48,7 +48,9 @@ jobs:
           name: Trigger rundeck
           command: |
             curl -f -H "X-Rundeck-Auth-Token: ${RUNDECK_API_TOKEN}" \
-              -X POST https://colossus.kruemel.home/rundeck/api/18/job/8c822ea8-ef03-419d-95cd-5a2ca7106071/executions
+            -H 'Content-Type: application/json' \
+            -d "{ \"options\" : { \"commit\": \"${CIRCLE_SHA1}\" }}" \
+            -X POST https://colossus.kruemel.home/rundeck/api/18/job/8c822ea8-ef03-419d-95cd-5a2ca7106071/executions
 
 
 
