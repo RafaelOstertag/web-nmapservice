@@ -41,6 +41,18 @@ jobs:
       - run:
           name: Deploy
           command: curl -f -u "${REPO_USERNAME}:${REPO_PASSWORD}" --upload-file "src/nmapservice" "https://rafaelostertag.jfrog.io/artifactory/local-generic/nmapservice/nmapservice"
+  trigger-rundeck:
+    executor: c/internal-infra
+    steps:
+      - run:
+          name: Trigger rundeck
+          command: |
+            curl -f -H "X-Rundeck-Auth-Token: ${RUNDECK_API_TOKEN}" \
+            -H 'Content-Type: application/json' \
+            -d "{ \"options\" : { \"commit\": \"${CIRCLE_SHA1}\" }}" \
+            -X POST https://colossus.kruemel.home/rundeck/api/18/job/8c822ea8-ef03-419d-95cd-5a2ca7106071/executions
+
+
 
 workflows:
   build-any-branch:
@@ -52,3 +64,8 @@ workflows:
             - build
           context:
             - generic-repository-write
+      - trigger-rundeck:
+          context:
+            - rundeck
+          requires:
+            - deploy-artifact
